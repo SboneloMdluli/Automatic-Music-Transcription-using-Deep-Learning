@@ -74,11 +74,11 @@
      <string>Browse</string>
     </property>
    </widget>
-   <widget class="QWidget" name="layoutWidget">
+   <widget class="QWidget" name="">
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>221</y>
+      <y>223</y>
       <width>651</width>
       <height>31</height>
      </rect>
@@ -136,8 +136,8 @@
    <slot>transribeSlot()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>689</x>
-     <y>298</y>
+     <x>658</x>
+     <y>300</y>
     </hint>
     <hint type="destinationlabel">
      <x>714</x>
@@ -147,7 +147,7 @@
   </connection>
   <connection>
    <sender>pushButton</sender>
-   <signal>clicked()</signal>
+   <signal>clicked(bool)</signal>
    <receiver>Dialog</receiver>
    <slot>browseSlot()</slot>
    <hints>
