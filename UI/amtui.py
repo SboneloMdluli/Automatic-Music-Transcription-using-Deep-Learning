@@ -49,9 +49,9 @@ class Ui_Dialog(object):
         self.label.setObjectName("label")
 
         self.retranslateUi(Dialog)
-        self.lineEdit.returnPressed.connect(Dialog.returnedPressedSlot)
-        self.pushButton_2.clicked.connect(Dialog.transribeSlot)
-        self.pushButton.clicked['bool'].connect(Dialog.browseSlot)
+        self.lineEdit.returnPressed.connect(self.returnedPressedSlot)
+        self.pushButton_2.clicked.connect(self.transribeSlot)
+        self.pushButton.clicked['bool'].connect(self.browseSlot)
         QtCore.QMetaObject.connectSlotsByName(Dialog)
 
     def retranslateUi(self, Dialog):
@@ -62,6 +62,14 @@ class Ui_Dialog(object):
         self.pushButton_2.setText(_translate("Dialog", "Transcribe"))
         self.label.setText(_translate("Dialog", "Automaticed Music Transcriber"))
 
+    def returnedPressedSlot(self):
+        print("search")
+
+    def transribeSlot(self):
+        print("start")
+
+    def browseSlot(self):
+        print("browse file")
 
 if __name__ == "__main__":
     import sys
