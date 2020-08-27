@@ -9,7 +9,7 @@
 
 
 from PyQt5 import QtCore, QtGui, QtWidgets
-
+from PyQt5.QtCore import QObject, pyqtSlot
 
 class Ui_Dialog(object):
     def setupUi(self, Dialog):
@@ -32,16 +32,16 @@ class Ui_Dialog(object):
         self.pushButton = QtWidgets.QPushButton(self.frame)
         self.pushButton.setGeometry(QtCore.QRect(560, 10, 80, 25))
         self.pushButton.setObjectName("pushButton")
-        self.widget = QtWidgets.QWidget(self.frame)
-        self.widget.setGeometry(QtCore.QRect(10, 223, 651, 31))
-        self.widget.setObjectName("widget")
-        self.horizontalLayout = QtWidgets.QHBoxLayout(self.widget)
+        self.layoutWidget = QtWidgets.QWidget(self.frame)
+        self.layoutWidget.setGeometry(QtCore.QRect(10, 221, 651, 31))
+        self.layoutWidget.setObjectName("layoutWidget")
+        self.horizontalLayout = QtWidgets.QHBoxLayout(self.layoutWidget)
         self.horizontalLayout.setContentsMargins(0, 0, 0, 0)
         self.horizontalLayout.setObjectName("horizontalLayout")
-        self.textEdit = QtWidgets.QTextEdit(self.widget)
+        self.textEdit = QtWidgets.QTextEdit(self.layoutWidget)
         self.textEdit.setObjectName("textEdit")
         self.horizontalLayout.addWidget(self.textEdit)
-        self.pushButton_2 = QtWidgets.QPushButton(self.widget)
+        self.pushButton_2 = QtWidgets.QPushButton(self.layoutWidget)
         self.pushButton_2.setObjectName("pushButton_2")
         self.horizontalLayout.addWidget(self.pushButton_2)
         self.label = QtWidgets.QLabel(Dialog)
@@ -49,9 +49,9 @@ class Ui_Dialog(object):
         self.label.setObjectName("label")
 
         self.retranslateUi(Dialog)
-        self.lineEdit.returnPressed.connect(Dialog.returnedPressedSlot)
-        self.pushButton_2.clicked.connect(Dialog.transribeSlot)
-        self.pushButton.clicked['bool'].connect(Dialog.browseSlot)
+        self.lineEdit.returnPressed.connect(self.returnedPressedSlot)
+        self.pushButton_2.clicked.connect(self.transribeSlot)
+        self.pushButton.clicked.connect(self.browseSlot)
         QtCore.QMetaObject.connectSlotsByName(Dialog)
 
     def retranslateUi(self, Dialog):
@@ -62,6 +62,15 @@ class Ui_Dialog(object):
         self.pushButton_2.setText(_translate("Dialog", "Transcribe"))
         self.label.setText(_translate("Dialog", "Automaticed Music Transcriber"))
 
+
+    def returnedPressedSlot(self):
+        pass
+
+    def transribeSlot(self):
+        pass
+
+    def browseSlot(self):
+        pass
 
 if __name__ == "__main__":
     import sys
