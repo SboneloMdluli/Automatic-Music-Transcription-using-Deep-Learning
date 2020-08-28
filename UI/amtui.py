@@ -14,39 +14,35 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_Dialog(object):
     def setupUi(self, Dialog):
         Dialog.setObjectName("Dialog")
-        Dialog.resize(731, 457)
-        self.textBrowser = QtWidgets.QTextBrowser(Dialog)
-        self.textBrowser.setGeometry(QtCore.QRect(20, 350, 701, 91))
-        self.textBrowser.setObjectName("textBrowser")
-        self.frame = QtWidgets.QFrame(Dialog)
-        self.frame.setGeometry(QtCore.QRect(30, 50, 671, 261))
+        Dialog.resize(732, 460)
+        self.label = QtWidgets.QLabel(Dialog)
+        self.label.setGeometry(QtCore.QRect(260, 20, 221, 17))
+        self.label.setObjectName("label")
+        self.splitter = QtWidgets.QSplitter(Dialog)
+        self.splitter.setGeometry(QtCore.QRect(20, 50, 701, 401))
+        self.splitter.setOrientation(QtCore.Qt.Vertical)
+        self.splitter.setObjectName("splitter")
+        self.frame = QtWidgets.QFrame(self.splitter)
         self.frame.setFrameShape(QtWidgets.QFrame.StyledPanel)
         self.frame.setFrameShadow(QtWidgets.QFrame.Raised)
         self.frame.setObjectName("frame")
         self.label_2 = QtWidgets.QLabel(self.frame)
-        self.label_2.setGeometry(QtCore.QRect(11, 11, 68, 17))
+        self.label_2.setGeometry(QtCore.QRect(10, 10, 68, 17))
         self.label_2.setObjectName("label_2")
         self.lineEdit = QtWidgets.QLineEdit(self.frame)
-        self.lineEdit.setGeometry(QtCore.QRect(120, 10, 421, 25))
+        self.lineEdit.setGeometry(QtCore.QRect(84, 10, 511, 25))
         self.lineEdit.setObjectName("lineEdit")
         self.pushButton = QtWidgets.QPushButton(self.frame)
-        self.pushButton.setGeometry(QtCore.QRect(560, 10, 80, 25))
+        self.pushButton.setGeometry(QtCore.QRect(601, 10, 80, 25))
         self.pushButton.setObjectName("pushButton")
-        self.widget = QtWidgets.QWidget(self.frame)
-        self.widget.setGeometry(QtCore.QRect(10, 223, 651, 31))
-        self.widget.setObjectName("widget")
-        self.horizontalLayout = QtWidgets.QHBoxLayout(self.widget)
-        self.horizontalLayout.setContentsMargins(0, 0, 0, 0)
-        self.horizontalLayout.setObjectName("horizontalLayout")
-        self.textEdit = QtWidgets.QTextEdit(self.widget)
-        self.textEdit.setObjectName("textEdit")
-        self.horizontalLayout.addWidget(self.textEdit)
-        self.pushButton_2 = QtWidgets.QPushButton(self.widget)
+        self.pushButton_2 = QtWidgets.QPushButton(self.frame)
+        self.pushButton_2.setGeometry(QtCore.QRect(580, 180, 80, 25))
         self.pushButton_2.setObjectName("pushButton_2")
-        self.horizontalLayout.addWidget(self.pushButton_2)
-        self.label = QtWidgets.QLabel(Dialog)
-        self.label.setGeometry(QtCore.QRect(90, 20, 221, 17))
-        self.label.setObjectName("label")
+        self.textEdit = QtWidgets.QTextEdit(self.frame)
+        self.textEdit.setGeometry(QtCore.QRect(70, 180, 501, 21))
+        self.textEdit.setObjectName("textEdit")
+        self.debugTextBrowser = QtWidgets.QTextBrowser(self.splitter)
+        self.debugTextBrowser.setObjectName("debugTextBrowser")
 
         self.retranslateUi(Dialog)
         self.lineEdit.returnPressed.connect(self.returnedPressedSlot)
@@ -56,20 +52,20 @@ class Ui_Dialog(object):
 
     def retranslateUi(self, Dialog):
         _translate = QtCore.QCoreApplication.translate
-        Dialog.setWindowTitle(_translate("Dialog", "Dialog"))
+        Dialog.setWindowTitle(_translate("Dialog", "AMT"))
+        self.label.setText(_translate("Dialog", "Automatic Music Transcriber"))
         self.label_2.setText(_translate("Dialog", "File Name"))
         self.pushButton.setText(_translate("Dialog", "Browse"))
         self.pushButton_2.setText(_translate("Dialog", "Transcribe"))
-        self.label.setText(_translate("Dialog", "Automaticed Music Transcriber"))
 
     def returnedPressedSlot(self):
-        print("search")
+        pass
 
     def transribeSlot(self):
-        print("start")
+        pass
 
     def browseSlot(self):
-        print("browse file")
+        pass
 
 if __name__ == "__main__":
     import sys
