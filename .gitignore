@@ -17,7 +17,7 @@
 *.coverage.*
 /.idea
 /.vscode
-*.midi
+*.mid
 
 # Compiled source #
 ###################
