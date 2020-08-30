@@ -6,7 +6,7 @@ class Model :
     def isValid(self, fileName) :
 
         try :
-            file = open ( fileName, 'r' )
+            file = open ( fileName, 'rb' )
             file.close ( )
             return True
         except :
@@ -16,7 +16,7 @@ class Model :
 
         if self.isValid ( fileName ) :
             self.fileName = fileName
-            self.fileContents = open ( fileName, 'r' ).read ( )
+            self.fileContents = open ( fileName, 'rb' ).read ( )
         else :
             self.fileContents = ""
             self.fileName = ""

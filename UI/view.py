@@ -1,8 +1,9 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtCore import QObject, pyqtSlot
 from PyQt5 import QtMultimedia as M
-from amtui import Ui_Dialog
+from strUP import Ui_Dialog
 import sys
+import os
 from model import Model
 
 
@@ -11,6 +12,10 @@ class MainWindowUIClass ( Ui_Dialog ) :
 
         super ( ).__init__ ( )
         self.model = Model ( )
+        self.player = M.QMediaPlayer()
+        self.player.positionChanged.connect ( self.moveSlider )
+        self.player.durationChanged.connect(self.span)
+
 
     def setupUi(self, MW) :
 
@@ -21,29 +26,17 @@ class MainWindowUIClass ( Ui_Dialog ) :
     def debugPrint(self, msg) :
         self.debugTextBrowser.append ( msg )
 
-    def refreshAll(self) :
-
-        self.lineEdit.setText ( self.model.getFileName ( ) )
-        self.textEdit.setText ( self.model.getFileContents ( ) )
-
     # slot
-    def returnedPressedSlot(self) :
 
-        fileName = self.lineEdit.text ( )
-        if self.model.isValid ( fileName ) :
-            self.model.setFileName ( self.lineEdit.text ( ) )
-            self.refreshAll ( )
-        else :
-            m = QtWidgets.QMessageBox ( )
-            m.setText ( "Invalid file name!\n" + fileName )
-            m.setIcon ( QtWidgets.QMessageBox.Warning )
-            m.setStandardButtons ( QtWidgets.QMessageBox.Ok
-                                   | QtWidgets.QMessageBox.Cancel )
-            m.setDefaultButton ( QtWidgets.QMessageBox.Cancel )
-            ret = m.exec_ ( )
-            self.lineEdit.setText ( "" )
-            self.refreshAll ( )
-            self.debugPrint ( "Invalid file specified: " + fileName )
+    def span(self, duration):
+        self.horizontalSlider.setRange(0, duration)
+
+
+    def moveSlider(self, pos):
+        self.horizontalSlider.setValue(pos)
+
+    def stopAudio(self) :
+        self.player.pause ( )
 
     # slot
     def transribeSlot(self) :
@@ -53,7 +46,6 @@ class MainWindowUIClass ( Ui_Dialog ) :
        # self.debugPrint ( "Transcrib" )
         self.url = QtCore.QUrl.fromLocalFile(self.model.getFileName())
         self.content = M.QMediaContent(self.url)
-        self.player = M.QMediaPlayer()
         self.player.setMedia(self.content)
         self.player.play()
 
@@ -72,10 +64,10 @@ class MainWindowUIClass ( Ui_Dialog ) :
             "All Files (*)",
             options=options )
         if fileName :
-            self.debugPrint ( "setting file name: " + fileName )
+            self.pushButton_2.setEnabled ( True )
+            self.pushButton_3.setEnabled ( True )
+            self.debugPrint ( "Transcribing: " + os.path.basename(fileName))
             self.model.setFileName ( fileName )
-            self.refreshAll ( )
-
 
 def main() :
 

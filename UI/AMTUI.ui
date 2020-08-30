@@ -32,7 +32,7 @@
      <x>20</x>
      <y>50</y>
      <width>701</width>
-     <height>401</height>
+     <height>391</height>
     </rect>
    </property>
    <property name="orientation">
@@ -48,24 +48,14 @@
     <widget class="QLabel" name="label_2">
      <property name="geometry">
       <rect>
-       <x>10</x>
+       <x>40</x>
        <y>10</y>
-       <width>68</width>
+       <width>31</width>
        <height>17</height>
       </rect>
      </property>
      <property name="text">
-      <string>File Name</string>
-     </property>
-    </widget>
-    <widget class="QLineEdit" name="lineEdit">
-     <property name="geometry">
-      <rect>
-       <x>84</x>
-       <y>10</y>
-       <width>511</width>
-       <height>25</height>
-      </rect>
+      <string>File</string>
      </property>
     </widget>
     <widget class="QPushButton" name="pushButton">
@@ -84,8 +74,8 @@
     <widget class="QPushButton" name="pushButton_2">
      <property name="geometry">
       <rect>
-       <x>580</x>
-       <y>180</y>
+       <x>40</x>
+       <y>90</y>
        <width>80</width>
        <height>25</height>
       </rect>
@@ -94,14 +84,30 @@
       <string>Transcribe</string>
      </property>
     </widget>
-    <widget class="QTextEdit" name="textEdit">
+    <widget class="QPushButton" name="pushButton_3">
      <property name="geometry">
       <rect>
-       <x>70</x>
-       <y>180</y>
-       <width>501</width>
-       <height>21</height>
+       <x>600</x>
+       <y>80</y>
+       <width>80</width>
+       <height>25</height>
       </rect>
+     </property>
+     <property name="text">
+      <string>Stop</string>
+     </property>
+    </widget>
+    <widget class="QSlider" name="horizontalSlider">
+     <property name="geometry">
+      <rect>
+       <x>80</x>
+       <y>10</y>
+       <width>511</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
      </property>
     </widget>
    </widget>
@@ -111,30 +117,14 @@
  <resources/>
  <connections>
   <connection>
-   <sender>lineEdit</sender>
-   <signal>returnPressed()</signal>
-   <receiver>Dialog</receiver>
-   <slot>returnedPressedSlot()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>382</x>
-     <y>82</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>26</x>
-     <y>321</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
    <sender>pushButton_2</sender>
    <signal>clicked()</signal>
    <receiver>Dialog</receiver>
    <slot>transribeSlot()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>658</x>
-     <y>300</y>
+     <x>118</x>
+     <y>164</y>
     </hint>
     <hint type="destinationlabel">
      <x>714</x>
@@ -158,10 +148,27 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>pushButton_3</sender>
+   <signal>clicked()</signal>
+   <receiver>Dialog</receiver>
+   <slot>stopAudio()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>667</x>
+     <y>145</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>704</x>
+     <y>394</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>browseSlot()</slot>
   <slot>transribeSlot()</slot>
   <slot>returnedPressedSlot()</slot>
+  <slot>stopAudio()</slot>
  </slots>
 </ui>
