@@ -1,19 +1,20 @@
-def AMT(filename_):
-    # View Spectrogram of the Audio File..
-    # Importing General Packages
-    import numpy as np
-    import os
+# Importing General Packages
+import numpy as np
+import os
     
-    ## Importing Visualization Pakcages
-    import seaborn
-    import matplotlib.pyplot as plt
-    import IPython.display as ipd
+## Importing Visualization Pakcages
+import seaborn
+import matplotlib.pyplot as plt
+import IPython.display as ipd
 
-    ## Importing Audio Processing Pakcages
-    import librosa, librosa.display 
+## Importing Audio Processing Pakcages
+import librosa, librosa.display
+
+def AMT(filename_):
+    # View Spectrogram of the Audio File.. 
 
     # Define Variable Q-Transform Parameters for Audio Signals Processing
-    fs = 22050  # Sampling frequency 
+    fs = 44100  # Sampling frequency 
     hop_length=512  # number of samples between successive VQT columns
     fmin=None # Minimum frequency. Defaults to C1 ~= 32.70 Hz
     n_bins=84 # Number of frequency bins
@@ -43,6 +44,12 @@ def AMT(filename_):
     V = librosa.vqt(x,sr= fs,hop_length=hop_length,fmin=fmin,n_bins=n_bins,gamma=20,bins_per_octave=bins_per_octave,tuning=tuning,filter_scale=filter_scale,norm=norm ,sparsity=0.01 ,window='hann',scale=scale,pad_mode=pad_mode,res_type=res_type,dtype=dtype)
     
     ## Display the VQT spectrogram
-    logV = librosa.amplitude_to_db(np.abs(V))
-    plt.figure(figsize=(15, 5))
-    librosa.display.specshow(logV, sr=fs, x_axis='time', y_axis='cqt_note', fmin=fmin, cmap='coolwarm')
+    #logV = librosa.amplitude_to_db(np.abs(V))
+    #plt.figure(figsize=(15, 5))
+    #librosa.display.specshow(logV, sr=fs, x_axis='time', y_axis='cqt_note', fmin=fmin, cmap='coolwarm')
+    
+    # Conversion into the Mel-Scale from the log DB scale
+    n_mels = 128          # Bins 
+    V_mel = np.abs(V)**2  # Mapping Magnitude spectrogram to the Mel Scale
+    S = librosa.feature.melspectrogram(S=V_mel,sr=fs,n_mels=n_mels,n_fft=hop_length*2, hop_length=hop_length)  
+    librosa.display.specshow(S, sr=fs, x_axis='time', y_axis='mel', fmin=fmin, fmax=8000)
