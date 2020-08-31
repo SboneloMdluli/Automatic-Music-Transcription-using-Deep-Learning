@@ -27,6 +27,3 @@ class Model :
     def getFileContents(self) :
 
         return self.fileContents
-
-    def transribe(self, text) :
-        pass

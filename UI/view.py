@@ -5,7 +5,8 @@ from strUP import Ui_Dialog
 import sys
 import os
 from model import Model
-
+sys.path.insert(0, '../Digital\ Signals\ Processing/vqt.py ')
+from vqt import AMT
 
 class MainWindowUIClass ( Ui_Dialog ) :
     def __init__(self) :
@@ -48,7 +49,7 @@ class MainWindowUIClass ( Ui_Dialog ) :
         self.content = M.QMediaContent(self.url)
         self.player.setMedia(self.content)
         self.player.play()
-
+        AMT(self.model.getFileName())
 
     # slot
     def browseSlot(self) :

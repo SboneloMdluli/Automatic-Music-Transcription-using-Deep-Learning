@@ -1,17 +1,17 @@
+# View Spectrogram of the Audio File..
+# Importing General Packages
+import numpy as np
+import os
+
+## Importing Visualization Pakcages
+#import seaborn
+import matplotlib.pyplot as plt
+#import IPython.display as ipd
+
+## Importing Audio Processing Pakcages
+import librosa, librosa.display
+
 def AMT(filename_):
-    # View Spectrogram of the Audio File..
-    # Importing General Packages
-    import numpy as np
-    import os
-    
-    ## Importing Visualization Pakcages
-    import seaborn
-    import matplotlib.pyplot as plt
-    import IPython.display as ipd
-
-    ## Importing Audio Processing Pakcages
-    import librosa, librosa.display 
-
     # Define Variable Q-Transform Parameters for Audio Signals Processing
     fs = 22050  # Sampling frequency 
     hop_length=512  # number of samples between successive VQT columns
