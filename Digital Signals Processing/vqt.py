@@ -7,13 +7,15 @@ import seaborn
 import matplotlib.pyplot as plt
 import IPython.display as ipd
 import skimage                # Saving the spectrogram image
+import skimage.io
+import pylab
 
 ## Importing Audio Processing Pakcages
 import librosa, librosa.display
 
-def scale_minmax(X, min=0.0, max=1.0):
+def scale_minmax(X, Xmin=0.0, Xmax=1.0):
     X_std = (X - X.min()) / (X.max() - X.min())
-    X_scaled = X_std * (max - min) + min
+    X_scaled = X_std  * (Xmax - Xmin) + Xmin
     return X_scaled
 
 def AMT(filename_):
@@ -46,12 +48,6 @@ def AMT(filename_):
     ###### Playback audio file
     # ipd.Audio(x, rate=fs)
     
-    # extract a fixed length window
-    start_sample = 0 # starting at beginning
-    time_steps = 384 # number of time-steps. Width of image
-    length_samples = time_steps*hop_length
-    window_audio = x[start_sample:start_sample+length_samples]
-    
     # VQT Computation 
     V = librosa.vqt(x,sr= fs,hop_length=hop_length,fmin=fmin,n_bins=n_bins,gamma=20,bins_per_octave=bins_per_octave,tuning=tuning,filter_scale=filter_scale,norm=norm ,sparsity=0.01 ,window='hann',scale=scale,pad_mode=pad_mode,res_type=res_type,dtype=dtype)
     
@@ -60,10 +56,20 @@ def AMT(filename_):
     #plt.figure(figsize=(15, 5))
     #librosa.display.specshow(logV, sr=fs, x_axis='time', y_axis='cqt_note', fmin=fmin, cmap='coolwarm')
     
-    # Conversion into the Mel-Scale from the log DB scale
+    ### Conversion into the Mel-Scale to display and save Mel-spectrogram
     n_mels = 128          # Bins 
     V_mel = np.abs(V)  # Mapping Magnitude spectrogram to the Mel Scale
-    S = librosa.feature.melspectrogram(S=V_mel,sr=fs,n_mels=n_mels,n_fft=hop_length*2, hop_length=hop_length)  
-    librosa.display.specshow(S, sr=fs, x_axis='time', y_axis='mel', fmin=fmin, fmax=8000, cmap="coolwarm")
+    mels = librosa.feature.melspectrogram(S=V_mel,sr=fs,n_mels=n_mels,n_fft=hop_length*2, hop_length=hop_length)  
+    Smels = librosa.display.specshow(mels, sr=fs, x_axis='time', y_axis='mel', fmin=fmin, fmax=8000, cmap="coolwarm")
     
+    # CONVERSION 
+    mels = np.log(mels + 1e-9) # add small number to avoid log(0)
+    out = 'out.png'
     
+    # min-max scale to fit inside 8-bit range
+    img = scale_minmax(mels, 0, 255).astype(np.uint8)
+    img = np.flip(img, axis=0) # put low frequencies at the bottom in image
+    img = 255-img # invert. make black==more energy
+
+    # save as PNG
+    skimage.io.imsave(out, img)
