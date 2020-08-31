@@ -6,9 +6,15 @@ import os
 import seaborn
 import matplotlib.pyplot as plt
 import IPython.display as ipd
+import skimage                # Saving the spectrogram image
 
 ## Importing Audio Processing Pakcages
 import librosa, librosa.display
+
+def scale_minmax(X, min=0.0, max=1.0):
+    X_std = (X - X.min()) / (X.max() - X.min())
+    X_scaled = X_std * (max - min) + min
+    return X_scaled
 
 def AMT(filename_):
     # View Spectrogram of the Audio File.. 
@@ -40,6 +46,12 @@ def AMT(filename_):
     ###### Playback audio file
     # ipd.Audio(x, rate=fs)
     
+    # extract a fixed length window
+    start_sample = 0 # starting at beginning
+    time_steps = 384 # number of time-steps. Width of image
+    length_samples = time_steps*hop_length
+    window_audio = x[start_sample:start_sample+length_samples]
+    
     # VQT Computation 
     V = librosa.vqt(x,sr= fs,hop_length=hop_length,fmin=fmin,n_bins=n_bins,gamma=20,bins_per_octave=bins_per_octave,tuning=tuning,filter_scale=filter_scale,norm=norm ,sparsity=0.01 ,window='hann',scale=scale,pad_mode=pad_mode,res_type=res_type,dtype=dtype)
     
@@ -50,6 +62,8 @@ def AMT(filename_):
     
     # Conversion into the Mel-Scale from the log DB scale
     n_mels = 128          # Bins 
-    V_mel = np.abs(V)**2  # Mapping Magnitude spectrogram to the Mel Scale
+    V_mel = np.abs(V)  # Mapping Magnitude spectrogram to the Mel Scale
     S = librosa.feature.melspectrogram(S=V_mel,sr=fs,n_mels=n_mels,n_fft=hop_length*2, hop_length=hop_length)  
-    librosa.display.specshow(S, sr=fs, x_axis='time', y_axis='mel', fmin=fmin, fmax=8000)
+    librosa.display.specshow(S, sr=fs, x_axis='time', y_axis='mel', fmin=fmin, fmax=8000, cmap="coolwarm")
+    
+    
