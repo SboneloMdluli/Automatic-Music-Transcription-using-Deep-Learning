@@ -5,7 +5,10 @@ from strUP import Ui_Dialog
 import sys
 import os
 from model import Model
-sys.path.insert(0, '../Digital\ Signals\ Processing/vqt.py ')
+ppath= os.path.dirname(os.getcwd())
+os.chdir(ppath)
+xpath = os.getcwd() + '/Digital Signals Processing'
+sys.path.insert(0, xpath)
 from vqt import AMT
 
 class MainWindowUIClass ( Ui_Dialog ) :
@@ -78,6 +81,5 @@ def main() :
     ui.setupUi ( MainWindow )
     MainWindow.show ( )
     sys.exit ( app.exec_ ( ) )
-
 
 main ( )
