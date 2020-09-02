@@ -1,5 +1,5 @@
 import keras.models import Sequential
-import keras.layers import Conv2D, MaxPooling2D, Activation, Droupout, Flatten, Dense
+import keras.layers import Conv2D, MaxPooling2D, Activation, Dropout, Flatten, Dense
 import keras import backend as K
 from keras.preprocessing image
 from keras.preprocessing.image import ImageDataGenerator
