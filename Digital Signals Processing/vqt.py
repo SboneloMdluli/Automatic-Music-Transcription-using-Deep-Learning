@@ -1,7 +1,6 @@
 # View Spectrogram of the Audio File..
 # Importing General Packages
 import numpy as np
-import os
 import skimage                # Saving the spectrogram image
 import skimage.io
 import librosa, librosa.display
