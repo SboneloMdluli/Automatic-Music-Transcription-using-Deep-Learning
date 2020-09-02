@@ -26,3 +26,7 @@ The audio file are processed using variable Q-Transform. Digial signal processin
 ```
 
 ### Machine Learning
+The instrument classification model in made using Keras which can be installed using.
+```sh
+ pip install Keras
+```
