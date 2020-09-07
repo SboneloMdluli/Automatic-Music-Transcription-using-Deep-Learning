@@ -32,5 +32,5 @@ The instrument classification model in made using Keras which can be installed u
 ```
 #### Data preparation
 
-[The ground truth data is generated using MIDI format](https://web.archive.org/web/20141227205754/http://www.sonicspot.com:80/guide/midifiles.html). We use [open source MIDI parser to get note data](https://github.com/vishnubob/python-midi).
+[The ground truth data is generated using MIDI format](https://web.archive.org/web/20141227205754/http://www.sonicspot.com:80/guide/midifiles.html). We use [open source MIDI parser to get note data](https://mido.readthedocs.io/en/latest/index.html).
 
