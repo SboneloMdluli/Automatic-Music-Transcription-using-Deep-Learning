@@ -104,7 +104,7 @@ class NoteEvents:
         return ground_truth
 
 
-def getHotVector(song,samplingFReq,duration):
+def gethotvect(song,samplingFReq,duration):
     events = NoteEvents(song)
     truth = events.get_ground_truth(samplingFReq,duration)
     memfile = io.BytesIO()
@@ -114,6 +114,6 @@ def getHotVector(song,samplingFReq,duration):
     return serialized
 
 if __name__ == '__main__':
-    truth = getHotVector('ddrum.mid',31.25,20)
+    truth = gethotvect('ddrum.mid',31.25,20)
     plt.matshow(truth)
     plt.show()
