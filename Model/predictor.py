@@ -14,7 +14,7 @@ def load_image(filename):
 	img = img.astype('float32')
 	img = img - [123.68, 116.779, 103.939]
 	return img
- 
+
 def pred(img):
 	model = load_model('/content/AMTclassification.h5')
 	# predict the class

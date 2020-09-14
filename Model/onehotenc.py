@@ -3,47 +3,33 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 
-
 # Comverts MIDI file pattern to representation of notes events in absolute time
 class NoteEvents:
-    def __init__(self, pattern, note_tracks=None, start_on_note=True):
+    def __init__(self, song, note_tracks=None, start_on_note=True):
         self._event_list = []
         self.note_time_list = []
-        pattern.make_ticks_abs()
-        self.pattern = pattern
-        print(pattern)
-        self.ticks_per_beat = pattern.resolution
-        self.numNotes = 88
+        self.pattern = midi.read_midifile (song)
+        self.pattern.make_ticks_abs ( )
+        self.ticks_per_beat = self.pattern.resolution
+        self.numNotes = 60
         # offset between note index and MIDI note number
         self.noteOffset = 9
         self.PPQ = 480
         # list of track names to include notes from
         self.note_tracks = note_tracks
-        self.names = self._name_tracks()
         self.start_on_note = start_on_note
         self._parse_events()
 
-    def _name_tracks(self):
-        names = [None] * len(self.pattern)
-        for i in range(len(self.pattern)):
-            for event in self.pattern[i]:
-                if type(event) == midi.events.TrackNameEvent:
-                    names[i] = event.text
-                break
-        return names
 
     def _parse_events(self):
         for i in range(len(self.pattern)):
             for event in self.pattern[i]:
                 if type(event) in (midi.events.NoteOnEvent, midi.events.NoteOffEvent):
-                    #if self.note_tracks == None or self.names[i] in self.note_tracks:
                     self._event_list.append(event)
                 elif type(event) == midi.events.SetTempoEvent:
                     self._event_list.append(event)
                 elif type(event) == midi.events.EndOfTrackEvent and event.tick != 0:
                     self._event_list.append(event)
-        #self._event_list = sorted(self._event_list, key=lambda x: x.tick)
-        #print ( self._event_list )
         self._event_list_timed()
 
 
@@ -51,33 +37,26 @@ class NoteEvents:
         assert(type(self._event_list[0]) == midi.events.SetTempoEvent)
         microseconds_per_beat = self._event_list[0].get_mpqn()
 
-        #print(self.ticks_per_beat)
-
         prev_time = 0
         prev_tick = 0
         microseconds_per_tick = float(microseconds_per_beat) / self.PPQ
-
-        #print(self.ticks_per_beat)
-
         for event in self._event_list:
 
             tick_diff = event.tick - prev_tick
 
             curr_time = prev_time + (tick_diff * microseconds_per_tick)
-            #print ( curr_time )
             if type(event) != midi.events.SetTempoEvent:
                 self.note_time_list.append((event, curr_time))
                 prev_time = curr_time
                 prev_tick = event.tick
 
         start_time = self.note_time_list[0][1]
-        #print(start_time)
 
         if self.start_on_note:
             for i, tup in enumerate(self.note_time_list):
                 self.note_time_list[i] = (tup[0],tup[1]-start_time)
         self._last_event_time = self.note_time_list[-1][1]
-       # print(self._last_event_time)
+
 
     def _note_off(self, note_event):
         return ((type(note_event) == midi.events.NoteOnEvent) and (note_event.get_velocity() == 0)) \
@@ -117,17 +96,18 @@ class NoteEvents:
                 else:
                     template[pitch_index] = 1
 
-
             prev_time = curr_time
         if duration != None:
             ground_truth = ground_truth[:,:self.time_to_slice(1e6 * duration, slices_per_second)]
         return ground_truth
 
-if __name__ == '__main__':
-    pattern = midi.read_midifile('vss.midi')
-    events = NoteEvents(pattern)
-    truth = events.get_ground_truth(31.25, 20)
 
+
+def getHotVector(song,samplingFReq,duration):
+    events = NoteEvents(song)
+    truth = events.get_ground_truth(samplingFReq,duration)
     plt.matshow(truth)
     plt.show()
 
+if __name__ == '__main__':
+    getHotVector('ddrum.mid',31.25,20)
