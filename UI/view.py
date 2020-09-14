@@ -54,10 +54,10 @@ class MainWindowUIClass ( Ui_Dialog ) :
        # self.debugPrint ( "Transcrib" )
         self.url = QtCore.QUrl.fromLocalFile(self.model.getFileName())
         self.content = M.QMediaContent(self.url)
-        self.player.setMedia(self.content)
-        self.player.play()
         AMT(self.model.getFileName())
         res = self.model.gtruthvector()
+        self.player.setMedia(self.content)
+        self.player.play()
         #plt.matshow ( res )
         #plt.show ( )
 
