@@ -8,8 +8,8 @@ Sbonelo Mdluli and Moshekwa Malatji
 The repo contains the implemenation of an automatic music transcription application. Automatic music transcription is the process of converting music signal into musical notes.
 The application transcribes 2 instruments which are:
 
-  - Piano
-  - Drums
+  - Piano - channel 0
+  - Drums - channel 9
 
 ### Representation
 
