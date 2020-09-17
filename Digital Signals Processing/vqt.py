@@ -7,13 +7,12 @@ import librosa
 import librosa.display
 from glob import glob
 
-
 def scale_minmax(X, Xmin=0.0, Xmax=1.0):
     X_std = (X - X.min()) / (X.max() - X.min())
     X_scaled = X_std * (Xmax - Xmin) + Xmin
     return X_scaled
 
-def AMT(filename_):
+def AMT():
     # Define Variable Q-Transform Parameters for Audio Signals Processing
     fs = 44100  # Sampling frequency
     hop_length = 512  # number of samples between successive VQT columns
@@ -64,3 +63,5 @@ def AMT(filename_):
 
     # save as PNG
     skimage.io.imsave(out, img)
+
+AMT()
