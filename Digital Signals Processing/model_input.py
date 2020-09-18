@@ -1,7 +1,7 @@
 # View Spectrogram of the Audio File..
 # Importing General Packages
 import numpy as np
-import skimage                # Saving the spectrogram image
+import skimage               
 import skimage.io
 import librosa
 import librosa.display
@@ -29,32 +29,22 @@ pad_mode = 'reflect'  # Padding mode for centered frame analysis
 res_type = None  # The resampling mode for recursive downsampling
 dtype = None  # The dtype of the output array. By default, this is inferred to match the numerical precision of the input signal
 n_mels = 128
-window_size = 7 # WINDOW_FRAME SIZE 
 DURATION = 12
 WINDOW_SIZE = 7
 
-def scale_minmax(X, Xmin=0.0, Xmax=1.0):
-    X_std = (X - X.min()) / (X.max() - X.min())
-    X_scaled = X_std * (Xmax - Xmin) + Xmin
-    return X_scaled
-
-def AMT():
+def AMT_Framing(filename_):
     # Audio Processing
     # Loading the Audios
     # Path Configuration
-    # path = os.getcwd() + '/' + filename_
-    #path = os.getcwd()
-    # filename = "{}".format(filename_)
-    filename = 'Guns N Roses-Sweet Child O Mine Intro.wav'
+    #path = os.getcwd() + '/' + filename_
+    filename = "{}".format(filename_)
     x, fs = librosa.load(filename, sr=None, mono=True, duration=DURATION)
     V= librosa.vqt(x, sr=fs, hop_length=hop_length, fmin=fmin, n_bins=n_bins, gamma=20, bins_per_octave=bins_per_octave, tuning=tuning,
                         filter_scale=filter_scale, norm=norm, sparsity=0.01, window='hann', scale=scale, pad_mode=pad_mode, res_type=res_type, dtype=dtype)
-    #VQT_result = np.absolute(V)
-    V_mel = np.abs(V)  # Mapping Magnitude spectrogram to the Mel Scale
+    # Mapping Magnitude spectrogram to the Mel Scale
+    V_mel = np.abs(V)  
     logFrame = librosa.amplitude_to_db(V_mel)
-    #librosa.display.specshow(logFrame ,sr=fs, x_axis='time', y_axis='mel', fmin=fmin, fmax=8000, cmap="coolwarm")
     mels = librosa.feature.melspectrogram( S=V_mel, sr=fs, n_mels=n_mels, n_fft=hop_length*2, hop_length=hop_length)
-    Smels = librosa.display.specshow(mels, sr=fs, x_axis='time', y_axis='mel', fmin=fmin, fmax=8000, cmap="coolwarm")
     
     np_array_list = []
     np_array_list.append(mels)    
@@ -79,23 +69,6 @@ def AMT():
         numSlices = min(frame_windows.shape[0],Y_numSlices)
         numSlices_list.append(numSlices)
         frame_windows_list.append(frame_windows[:numSlices]) 
-        combined2 = np.concatenate(frame_windows_list, axis=0)
-    
-    # return np.concatenate(frame_windows_list, axis=0), numSlices_list 
-    # result = combined2[0][1]
-    result = combined2[450][127]
-    print(result)
-    librosa.display.specshow(result ,sr=fs, x_axis='time', y_axis='mel', fmin=fmin, fmax=8000, cmap="coolwarm")
-    result = np.log(result + 1e-9)  # add small number to avoid log(0)
-    out = "{}.png".format(filename)
-
-    # min-max scale to fit inside 8-bit range
-    img = scale_minmax(result, 0, 255).astype(np.uint8)
-    # put low frequencies at the bottom in image
-    img = np.flip(img, axis=0)
-    img = 255-img  # invert. make black==more energy
-
-    # save as PNG
-    skimage.io.imsave(out, img)
-    
-AMT()
+    return np.concatenate(frame_windows_list, axis=0) 
+   
+AMT_Framing(filename)
