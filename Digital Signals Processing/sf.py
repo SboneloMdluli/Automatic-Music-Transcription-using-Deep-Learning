@@ -86,7 +86,18 @@ def AMT():
     result = combined2[450][127]
     print(result)
     librosa.display.specshow(result ,sr=fs, x_axis='time', y_axis='mel', fmin=fmin, fmax=8000, cmap="coolwarm")
-'''    
+    mels = np.log(mels + 1e-9)  # add small number to avoid log(0)
+    out = "{}.png".format(filename)
+
+    # min-max scale to fit inside 8-bit range
+    img = scale_minmax(mels, 0, 255).astype(np.uint8)
+    # put low frequencies at the bottom in image
+    img = np.flip(img, axis=0)
+    img = 255-img  # invert. make black==more energy
+
+    # save as PNG
+    skimage.io.imsave(out, img)
+    '''    
     # Attempt at displaying each spectrogram
     # for 
 #def spectrograms():
