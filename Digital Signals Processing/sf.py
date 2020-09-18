@@ -54,7 +54,7 @@ def AMT():
     logFrame = librosa.amplitude_to_db(V_mel)
     #librosa.display.specshow(logFrame ,sr=fs, x_axis='time', y_axis='mel', fmin=fmin, fmax=8000, cmap="coolwarm")
     mels = librosa.feature.melspectrogram( S=V_mel, sr=fs, n_mels=n_mels, n_fft=hop_length*2, hop_length=hop_length)
-    # Smels = librosa.display.specshow(mels, sr=fs, x_axis='time', y_axis='mel', fmin=fmin, fmax=8000, cmap="coolwarm")
+    Smels = librosa.display.specshow(mels, sr=fs, x_axis='time', y_axis='mel', fmin=fmin, fmax=8000, cmap="coolwarm")
     
     np_array_list = []
     np_array_list.append(mels)    
@@ -86,50 +86,16 @@ def AMT():
     result = combined2[450][127]
     print(result)
     librosa.display.specshow(result ,sr=fs, x_axis='time', y_axis='mel', fmin=fmin, fmax=8000, cmap="coolwarm")
-    mels = np.log(mels + 1e-9)  # add small number to avoid log(0)
+    result = np.log(result + 1e-9)  # add small number to avoid log(0)
     out = "{}.png".format(filename)
 
     # min-max scale to fit inside 8-bit range
-    img = scale_minmax(mels, 0, 255).astype(np.uint8)
+    img = scale_minmax(result, 0, 255).astype(np.uint8)
     # put low frequencies at the bottom in image
     img = np.flip(img, axis=0)
     img = 255-img  # invert. make black==more energy
 
     # save as PNG
     skimage.io.imsave(out, img)
-    '''    
-    # Attempt at displaying each spectrogram
-    # for 
-#def spectrograms():
     
-     
-
-     #print (frame_windows_list[i])
-        logFrame = librosa.amplitude_to_db(np.abs(frame_windows_list[i]))
-        librosa.display.specshow(logFrame, sr=fs, x_axis='time', y_axis='cqt_note', fmin=fmin, cmap='coolwarm')
-        
-        #Smels = librosa.display.specshow(frames_windows_list[i], sr=fs, x_axis='time', y_axis='mel', fmin=fmin, fmax=8000, cmap="coolwarm")
-  
-def melScale():
-    12*31.25 = number of frames;
-    
-    # Conversion into the Mel-Scale to display and save Mel-spectrogram
-    V_mel = np.abs(V)  # Mapping Magnitude spectrogram to the Mel Scale
-    mels = librosa.feature.melspectrogram(
-    S=V_mel, sr=fs, n_mels=n_mels, n_fft=hop_length*2, hop_length=hop_length)
-    #Smels = librosa.display.specshow(mels, sr=fs, x_axis='time', y_axis='mel', fmin=fmin, fmax=8000, cmap="coolwarm")
-
-    # CONVERSION
-    mels = np.log(mels + 1e-9)  # add small number to avoid log(0)
-    out = "{}.png".format(filename)
-
-    # min-max scale to fit inside 8-bit range
-    img = scale_minmax(mels, 0, 255).astype(np.uint8)
-    # put low frequencies at the bottom in image
-    img = np.flip(img, axis=0)
-    img = 255-img  # invert. make black==more energy
-
-    # save as PNG
-    skimage.io.imsave(out, img)
-    '''    
 AMT()
