@@ -51,22 +51,24 @@ def AMT():
                         filter_scale=filter_scale, norm=norm, sparsity=0.01, window='hann', scale=scale, pad_mode=pad_mode, res_type=res_type, dtype=dtype)
     #VQT_result = np.absolute(V)
     V_mel = np.abs(V)  # Mapping Magnitude spectrogram to the Mel Scale
-    mels = librosa.feature.melspectrogram(
-    S=V_mel, sr=fs, n_mels=n_mels, n_fft=hop_length*2, hop_length=hop_length)
-    #Smels = librosa.display.specshow(mels, sr=fs, x_axis='time', y_axis='mel', fmin=fmin, fmax=8000, cmap="coolwarm")
+    logFrame = librosa.amplitude_to_db(V_mel)
+    #librosa.display.specshow(logFrame ,sr=fs, x_axis='time', y_axis='mel', fmin=fmin, fmax=8000, cmap="coolwarm")
+    mels = librosa.feature.melspectrogram( S=V_mel, sr=fs, n_mels=n_mels, n_fft=hop_length*2, hop_length=hop_length)
+    # Smels = librosa.display.specshow(mels, sr=fs, x_axis='time', y_axis='mel', fmin=fmin, fmax=8000, cmap="coolwarm")
     
     np_array_list = []
     np_array_list.append(mels)    
     combined = np.concatenate(np_array_list, axis = 1)
     mean = np.mean(combined, axis = 1, keepdims =True)
     std = np.std(combined, axis = 1, keepdims=True)
+    
     for i in range(len(np_array_list)):
         np_array_list[i] = np.divide(np.subtract(np_array_list[i], mean), std)
    
     frame_windows_list = []
     numSlices_list = []
     Y_numSlices = 625
-    xy = []
+    
     for i in range(len(np_array_list)):
         VQT_result = np_array_list[i]
         paddedX = np.zeros((VQT_result.shape[0], VQT_result.shape[1] + WINDOW_SIZE - 1), dtype=float)
@@ -78,16 +80,20 @@ def AMT():
         numSlices_list.append(numSlices)
         frame_windows_list.append(frame_windows[:numSlices]) 
         combined2 = np.concatenate(frame_windows_list, axis=0)
-    #return np.concatenate(frame_windows_list, axis=0), numSlices_list 
-    print(combined2.shape[2])
-
+    
+    # return np.concatenate(frame_windows_list, axis=0), numSlices_list 
+    # result = combined2[0][1]
+    result = combined2[450][127]
+    print(result)
+    librosa.display.specshow(result ,sr=fs, x_axis='time', y_axis='mel', fmin=fmin, fmax=8000, cmap="coolwarm")
+'''    
     # Attempt at displaying each spectrogram
-    for 
+    # for 
 #def spectrograms():
     
      
 
-'''     #print (frame_windows_list[i])
+     #print (frame_windows_list[i])
         logFrame = librosa.amplitude_to_db(np.abs(frame_windows_list[i]))
         librosa.display.specshow(logFrame, sr=fs, x_axis='time', y_axis='cqt_note', fmin=fmin, cmap='coolwarm')
         
