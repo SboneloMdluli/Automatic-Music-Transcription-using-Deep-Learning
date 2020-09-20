@@ -13,7 +13,7 @@ class NoteEvents:
         self.pattern = midi.read_midifile (song)
         self.pattern.make_ticks_abs ( )
         self.ticks_per_beat = self.pattern.resolution
-        self.numNotes = 60
+        self.numNotes = 88
         # offset between note index and MIDI note number
         self.noteOffset = 9
         self.PPQ = 480
@@ -72,6 +72,7 @@ class NoteEvents:
 
     # duration in seconds
     def get_ground_truth(self, slices_per_second, duration=None):
+
         microseconds_per_slice = 1e6 / slices_per_second
         number_slices = np.ceil(self._last_event_time / microseconds_per_slice).astype(int)
         ground_truth = np.zeros(self.numNotes * number_slices).reshape(self.numNotes, number_slices)
@@ -107,6 +108,8 @@ class NoteEvents:
 def getHotVector(song,samplingFReq,duration):
     events = NoteEvents(song)
     truth = events.get_ground_truth(samplingFReq,duration)
+    print(truth.shape)
+    np.savetxt ( "foo.csv", truth, delimiter="," )
     memfile = io.BytesIO()
     np.save(memfile, truth)
     memfile.seek(0)
@@ -114,6 +117,6 @@ def getHotVector(song,samplingFReq,duration):
     return serialized
 
 if __name__ == '__main__':
-    truth = getHotVector('ddrum.mid',31.25,20)
-    plt.matshow(truth)
-    plt.show()
+    truth = getHotVector('ddrum.midi',31.25,20)
+    #plt.matshow(truth)
+    #plt.show()
