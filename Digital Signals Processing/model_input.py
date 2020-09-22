@@ -8,6 +8,7 @@ import librosa.display
 from glob import glob
 import os
 import h5py
+from midi2audio import FluidSynth
 
 # Define Variable Q-Transform Parameters for Audio Signals Processing
 fs = 44100  # Sampling frequency
@@ -32,12 +33,15 @@ n_mels = 128
 DURATION = 12
 WINDOW_SIZE = 7
 
-def AMT_Framing(filename_):
+#def AMT_Framing(filename_):
+def AMT_Framing():
     # Audio Processing
     # Loading the Audios
     # Path Configuration
     # path = os.getcwd() + '/' + filename_
-    filename = "{}".format(filename_)
+    path = os.getcwd()
+    filename = 'Guns N Roses-Sweet Child O Mine Intro.wav'
+    #filename = "{}".format(filename_)
     x, fs = librosa.load(filename, sr=None, mono=True, duration=DURATION)
     V= librosa.vqt(x, sr=fs, hop_length=hop_length, fmin=fmin, n_bins=n_bins, gamma=20, bins_per_octave=bins_per_octave, tuning=tuning,
                         filter_scale=filter_scale, norm=norm, sparsity=0.01, window='hann', scale=scale, pad_mode=pad_mode, res_type=res_type, dtype=dtype)
@@ -48,13 +52,17 @@ def AMT_Framing(filename_):
     
     np_array_list = []
     np_array_list.append(mels)    
-    combined = np.concatenate(np_array_list, axis = 1)
-    mean = np.mean(combined, axis = 1, keepdims =True)
-    std = np.std(combined, axis = 1, keepdims=True)
     
-    for i in range(len(np_array_list)):
+    
+    combined = np.concatenate(np_array_list, axis = 1)
+    
+    mean = np.mean(combined, axis = 1, keepdims =True)
+    #std = np.std(combined, axis = 1, keepdims=True)
+    diff = np.amax(combined)
+    print(diff)
+    '''for i in range(len(np_array_list)):
         np_array_list[i] = np.divide(np.subtract(np_array_list[i], mean), std)
-   
+   '''
     frame_windows_list = []
     numSlices_list = []
     Y_numSlices = 625
@@ -69,13 +77,18 @@ def AMT_Framing(filename_):
         numSlices = min(frame_windows.shape[0],Y_numSlices)
         numSlices_list.append(numSlices)
         frame_windows_list.append(frame_windows[:numSlices]) 
-    return np.concatenate(frame_windows_list, axis=0) 
-   
+    #return np.concatenate(frame_windows_list, axis=0) 
+    
+    audio_frames= np.concatenate(frame_windows_list, axis=0)
+    storingData(audio_frames)
+    return audio_frames 
+
 #Function to store the frames in a hdf5 file    
 def storingData(frames):    
-    filename = 'vqt_audio_frames.h5'
+    filename = 'VQT.h5'
     path = os.getcwd() + '/' + filename
-    with h5py.File(path,w) as hdf:
+    with h5py.File(path,'w') as hdf:
         hdf.create_dataset('VQT_audio_frames',data=frames)
     
-AMT_Framing(filename)
+#AMT_Framing(filename)
+#AMT_Framing()
