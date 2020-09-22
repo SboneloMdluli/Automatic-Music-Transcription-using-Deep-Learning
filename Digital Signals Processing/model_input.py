@@ -7,7 +7,7 @@ import librosa
 import librosa.display
 from glob import glob
 import os
-import math
+import h5py
 
 # Define Variable Q-Transform Parameters for Audio Signals Processing
 fs = 44100  # Sampling frequency
@@ -36,7 +36,7 @@ def AMT_Framing(filename_):
     # Audio Processing
     # Loading the Audios
     # Path Configuration
-    #path = os.getcwd() + '/' + filename_
+    # path = os.getcwd() + '/' + filename_
     filename = "{}".format(filename_)
     x, fs = librosa.load(filename, sr=None, mono=True, duration=DURATION)
     V= librosa.vqt(x, sr=fs, hop_length=hop_length, fmin=fmin, n_bins=n_bins, gamma=20, bins_per_octave=bins_per_octave, tuning=tuning,
@@ -71,4 +71,11 @@ def AMT_Framing(filename_):
         frame_windows_list.append(frame_windows[:numSlices]) 
     return np.concatenate(frame_windows_list, axis=0) 
    
+#Function to store the frames in a hdf5 file    
+def storingData(frames):    
+    filename = 'vqt_audio_frames.h5'
+    path = os.getcwd() + '/' + filename
+    with h5py.File(path,w) as hdf:
+        hdf.create_dataset('VQT_audio_frames',data=frames)
+    
 AMT_Framing(filename)
