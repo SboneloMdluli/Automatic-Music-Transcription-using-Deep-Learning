@@ -33,15 +33,10 @@ n_mels = 128
 DURATION = 12
 WINDOW_SIZE = 7
 
-#def AMT_Framing(filename_):
-def AMT_Framing():
+def AMT_Framing(filename_):
     # Audio Processing
-    # Loading the Audios
-    # Path Configuration
-    # path = os.getcwd() + '/' + filename_
-    path = os.getcwd()
-    filename = 'Guns N Roses-Sweet Child O Mine Intro.wav'
-    #filename = "{}".format(filename_)
+    #filename = 'Guns N Roses-Sweet Child O Mine Intro.wav'
+    filename = "{}".format(filename_)
     x, fs = librosa.load(filename, sr=None, mono=True, duration=DURATION)
     V= librosa.vqt(x, sr=fs, hop_length=hop_length, fmin=fmin, n_bins=n_bins, gamma=20, bins_per_octave=bins_per_octave, tuning=tuning,
                         filter_scale=filter_scale, norm=norm, sparsity=0.01, window='hann', scale=scale, pad_mode=pad_mode, res_type=res_type, dtype=dtype)
@@ -53,16 +48,6 @@ def AMT_Framing():
     np_array_list = []
     np_array_list.append(mels)    
     
-    
-    combined = np.concatenate(np_array_list, axis = 1)
-    
-    mean = np.mean(combined, axis = 1, keepdims =True)
-    #std = np.std(combined, axis = 1, keepdims=True)
-    diff = np.amax(combined)
-    print(diff)
-    '''for i in range(len(np_array_list)):
-        np_array_list[i] = np.divide(np.subtract(np_array_list[i], mean), std)
-   '''
     frame_windows_list = []
     numSlices_list = []
     Y_numSlices = 625
@@ -77,7 +62,6 @@ def AMT_Framing():
         numSlices = min(frame_windows.shape[0],Y_numSlices)
         numSlices_list.append(numSlices)
         frame_windows_list.append(frame_windows[:numSlices]) 
-    #return np.concatenate(frame_windows_list, axis=0) 
     
     audio_frames= np.concatenate(frame_windows_list, axis=0)
     storingData(audio_frames)
