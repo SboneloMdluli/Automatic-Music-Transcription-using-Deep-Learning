@@ -1,11 +1,20 @@
 import sys
 import os
 import execnet
-import execnet
 import pickle
 import io
 import numpy as np
 import json
+ppath= os.path.dirname(os.getcwd())
+os.chdir(ppath)
+xpath = os.getcwd() + '/Digital Signals Processing'
+sys.path.insert(0, xpath)
+from vqt import AMT
+from model_input import AMT_Framing
+xpath = os.getcwd() + '/Model'
+sys.path.insert(0, xpath)
+from notes import getnotes
+#from transmodel import onehotnotes
 
 
 class Model :
@@ -56,3 +65,11 @@ class Model :
         memfile.seek ( 0 )
         a = np.load ( memfile )
         return a
+
+    def transcribe(self):
+        windows = AMT_Framing(self.getFileName())
+        #hotvectors = onehotnotes(windows) transciption model
+        hotvectors = np.loadtxt("MIDI-Unprocessed_SMF_02_R1_2004_01-05_ORIG_MID--AUDIO_02_R1_2004_05_Track05_wav.midi.csv", delimiter=",")
+        AMT(self.getFileName()) # produce spectogram
+        notes = getnotes(hotvectors)
+        return notes

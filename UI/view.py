@@ -6,14 +6,7 @@ import sys
 import os
 from model import Model
 import matplotlib.pyplot as plt
-ppath= os.path.dirname(os.getcwd())
-os.chdir(ppath)
-xpath = os.getcwd() + '/Digital Signals Processing'
-sys.path.insert(0, xpath)
-from vqt import AMT
-
-os.chdir(os.getcwd() + '/Model')
-
+import time
 
 class MainWindowUIClass ( Ui_Dialog ) :
     def __init__(self) :
@@ -23,6 +16,8 @@ class MainWindowUIClass ( Ui_Dialog ) :
         self.player = M.QMediaPlayer()
         self.player.positionChanged.connect ( self.moveSlider )
         self.player.durationChanged.connect(self.span)
+        self.instrument = ''
+        self.notes = ''
 
 
     def setupUi(self, MW) :
@@ -50,14 +45,17 @@ class MainWindowUIClass ( Ui_Dialog ) :
     def transribeSlot(self) :
         ''' Called when the user presses the Write-Doc button.
         '''
-       # self.model.transribe ( self.textEdit.toPlainText ( ) )
-       # self.debugPrint ( "Transcrib" )
         self.url = QtCore.QUrl.fromLocalFile(self.model.getFileName())
         self.content = M.QMediaContent(self.url)
-        AMT(self.model.getFileName())
-        res = self.model.gtruthvector()
+        notes = self.model.transcribe()
+        self.notes = notes[0]
+        self.instrument = notes[1]
+        self.debugPrint("Instrument type :" + self.instrument)
         self.player.setMedia(self.content)
         self.player.play()
+
+        self.debugPrint(self.notes)
+
         #plt.matshow ( res )
         #plt.show ( )
 
@@ -79,6 +77,7 @@ class MainWindowUIClass ( Ui_Dialog ) :
             self.pushButton_2.setEnabled ( True )
             self.pushButton_3.setEnabled ( True )
             self.debugPrint ( "Transcribing: " + os.path.basename(fileName))
+
             self.model.setFileName ( fileName )
 
 

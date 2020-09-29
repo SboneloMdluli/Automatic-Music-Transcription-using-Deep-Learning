@@ -13,7 +13,7 @@ def scale_minmax(X, Xmin=0.0, Xmax=1.0):
     X_scaled = X_std * (Xmax - Xmin) + Xmin
     return X_scaled
 
-def AMT():
+def AMT(filename_):
     # Define Variable Q-Transform Parameters for Audio Signals Processing
     fs = 44100  # Sampling frequency
     hop_length = 512  # number of samples between successive VQT columns
@@ -65,4 +65,3 @@ def AMT():
     # save as PNG
     skimage.io.imsave(out, img)
 
-AMT()

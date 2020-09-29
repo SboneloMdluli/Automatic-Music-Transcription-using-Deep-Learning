@@ -7,7 +7,7 @@ import librosa
 import librosa.display
 from glob import glob
 import os
-import h5py
+#import h5py
 from midi2audio import FluidSynth
 
 # Define Variable Q-Transform Parameters for Audio Signals Processing
@@ -64,15 +64,16 @@ def AMT_Framing(filename_):
         frame_windows_list.append(frame_windows[:numSlices]) 
     
     audio_frames= np.concatenate(frame_windows_list, axis=0)
-    storingData(audio_frames)
+    #storingData(audio_frames)
     return audio_frames 
 
+'''
 #Function to store the frames in a hdf5 file    
 def storingData(frames):    
     filename = 'VQT.h5'
     path = os.getcwd() + '/' + filename
     with h5py.File(path,'w') as hdf:
         hdf.create_dataset('VQT_audio_frames',data=frames)
-    
+'''
 #AMT_Framing(filename)
 #AMT_Framing()
