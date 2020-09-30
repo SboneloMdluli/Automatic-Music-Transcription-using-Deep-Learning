@@ -15,7 +15,7 @@ def scale_minmax(X, Xmin=0.0, Xmax=1.0):
 
 def AMT(filename_):
     # Define Variable Q-Transform Parameters for Audio Signals Processing
-    fs = 44100  # Sampling frequency
+    fs = 16000  # Sampling frequency
     hop_length = 512  # number of samples between successive VQT columns
     fmin = None  # Minimum frequency. Defaults to C1 ~= 32.70 Hz
     n_bins = 84  # Number of frequency bins
@@ -38,16 +38,26 @@ def AMT(filename_):
     # Audio Processing
     # Loading the Audios
     # Path Configuration
-    path = os.getcwd() + '/' + filename_
-    filename = "{}".format(filename_)
-    x, fs = librosa.load(filename, sr=None, mono=True, duration=12)
+    #path = os.getcwd() + '/' + filename_
+    #filename = "{}".format(filename_)
+    #x, fs = librosa.load(filename, sr=None, mono=True, duration=12)
     
-    # VQT Computation
-    V = librosa.vqt(x, sr=fs, hop_length=hop_length, fmin=fmin, n_bins=n_bins, gamma=20, bins_per_octave=bins_per_octave, tuning=tuning,
-                        filter_scale=filter_scale, norm=norm, sparsity=0.01, window='hann', scale=scale, pad_mode=pad_mode, res_type=res_type, dtype=dtype)
+    path = os.getcwd()
+    #audio_files = glob(path + '/*.wav')     # Collect all wav format files
+    audio_files = glob(path + '/*.wav')     # Collect all 
 
-    # Conversion into the Mel-Scale to display and save Mel-spectrogram
-    V_mel = np.abs(V)  # Mapping Magnitude spectrogram to the Mel Scale
+    for filename in range(0,len(audio_files),1):
+        filename = "{}".format(audio_files[filename])
+        x, fs = librosa.load(audio_files[filename], sr=None, mono=True, duration=12)
+        # VQT Computation
+        V = librosa.vqt(x, sr=fs, hop_length=hop_length, fmin=fmin, n_bins=n_bins, gamma=20, bins_per_octave=bins_per_octave, tuning=tuning,
+                            filter_scale=filter_scale, norm=norm, sparsity=0.01, window='hann', scale=scale, pad_mode=pad_mode, res_type=res_type, dtype=dtype)
+
+        V_mel = np.abs(V)
+    
+# Conversion into the Mel-Scale to display and save Mel-spectrogram
+def melspec(V_mel):
+    # Mapping Magnitude spectrogram to the Mel Scale
     mels = librosa.feature.melspectrogram(
     S=V_mel, sr=fs, n_mels=n_mels, n_fft=hop_length*2, hop_length=hop_length)
     #Smels = librosa.display.specshow(mels, sr=fs, x_axis='time', y_axis='mel', fmin=fmin, fmax=8000, cmap="coolwarm")
@@ -64,4 +74,3 @@ def AMT(filename_):
 
     # save as PNG
     skimage.io.imsave(out, img)
-

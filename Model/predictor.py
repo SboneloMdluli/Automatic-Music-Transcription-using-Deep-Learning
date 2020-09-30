@@ -1,6 +1,7 @@
 from keras.preprocessing.image import load_img
 from keras.preprocessing.image import img_to_array
 from keras.models import load_model
+import os
  
 # load and prepare the image
 def load_image(filename):
@@ -16,11 +17,8 @@ def load_image(filename):
 	return img
 
 def pred(img):
-	model = load_model('/content/AMTclassification.h5')
-	# predict the class
-	result = model.predict(img)
-	return (result[0])
- 
-img = load_image('/content/drive/My Drive/830.png')
-print( pred(img))
-
+    filename_ = 'AMTclassification.h5'
+    model = load_model(filename_)
+    # predict the class
+    result = model.predict(img)
+    return (result[0])

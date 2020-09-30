@@ -1,5 +1,5 @@
 import numpy as np
-#from predictor import pred,load_image
+from predictor import pred,load_image
 import glob, os
 
 piano = {1 : 'A0',
@@ -141,24 +141,23 @@ Drums = {35 : 'B0',
 
 # search for any image
 
-
 def getnotes(Y): #one hot encoding
     img = None
+    
     for file in glob.glob("*.png"):
         img = file
-
+    
+    image = load_image(img)
     notes = {}
-    #inst = pred(img) # classification model
-    inst = 'Piano'
-
+    inst = pred(image) # classification model
+    
     if inst == 'Piano' :
         notes = piano
     else :
         notes = Drums
-
+        
     Y = Y.transpose ( )
-    currNotes = ' '
-    notelist = []
+    crrNotes = ' '
     prev = -1
     for y in Y :
 
@@ -167,7 +166,6 @@ def getnotes(Y): #one hot encoding
 
         for m in cur :
             if prev !=  m :
-                currNotes = '| '+ notes.get ( m+9 ) + ' |'
-                notelist.append(currNotes)
+                currNotes = currNotes + notes.get ( m+9 ) + '|'
             prev =  m
-    return notelist,inst
+    return currNotes,inst
