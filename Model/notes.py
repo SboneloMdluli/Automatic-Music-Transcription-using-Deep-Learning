@@ -141,6 +141,7 @@ Drums = {35 : 'B0',
 
 # search for any image
 
+
 def getnotes(Y): #one hot encoding
     img = None
     for file in glob.glob("*.png"):
@@ -157,6 +158,7 @@ def getnotes(Y): #one hot encoding
 
     Y = Y.transpose ( )
     currNotes = ' '
+    notelist = []
     prev = -1
     for y in Y :
 
@@ -165,6 +167,7 @@ def getnotes(Y): #one hot encoding
 
         for m in cur :
             if prev !=  m :
-                currNotes = currNotes + notes.get ( m+9 ) + '|'
+                currNotes = '| '+ notes.get ( m+9 ) + ' |'
+                notelist.append(currNotes)
             prev =  m
-    return currNotes,inst
+    return notelist,inst

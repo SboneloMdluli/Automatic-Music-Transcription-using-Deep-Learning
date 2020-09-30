@@ -5,8 +5,8 @@ from strUP import Ui_Dialog
 import sys
 import os
 from model import Model
-import matplotlib.pyplot as plt
 import time
+import matplotlib.pyplot as plt
 
 class MainWindowUIClass ( Ui_Dialog ) :
     def __init__(self) :
@@ -33,6 +33,7 @@ class MainWindowUIClass ( Ui_Dialog ) :
 
     def span(self, duration):
         self.horizontalSlider.setRange(0, duration)
+        #print(duration)
 
 
     def moveSlider(self, pos):
@@ -54,7 +55,9 @@ class MainWindowUIClass ( Ui_Dialog ) :
         self.player.setMedia(self.content)
         self.player.play()
 
-        self.debugPrint(self.notes)
+        for i in self.notes:
+            self.debugPrint(i)
+            #self.debugTextBrowser.clear()
 
         #plt.matshow ( res )
         #plt.show ( )
@@ -76,9 +79,8 @@ class MainWindowUIClass ( Ui_Dialog ) :
         if fileName :
             self.pushButton_2.setEnabled ( True )
             self.pushButton_3.setEnabled ( True )
-            self.debugPrint ( "Transcribing: " + os.path.basename(fileName))
-
             self.model.setFileName ( fileName )
+            self.debugPrint("Transcribing: " + os.path.basename(fileName))
 
 
 
