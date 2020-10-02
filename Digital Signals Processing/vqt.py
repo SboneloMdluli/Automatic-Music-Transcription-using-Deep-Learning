@@ -44,7 +44,6 @@ def AMT(filename_):
     #path = os.getcwd() + '/' + filename_
     filename = "{}".format(filename_)
     x, fs = librosa.load(filename, sr=None, mono=True, duration=12)
-    x, fs = 
     # VQT Computation
     V = librosa.vqt(x, sr=fs, hop_length=hop_length, fmin=fmin, n_bins=n_bins, gamma=20, bins_per_octave=bins_per_octave, tuning=tuning,
                         filter_scale=filter_scale, norm=norm, sparsity=0.01, window='hann', scale=scale, pad_mode=pad_mode, res_type=res_type, dtype=dtype)
