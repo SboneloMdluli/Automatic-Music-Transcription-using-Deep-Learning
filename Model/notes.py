@@ -159,9 +159,6 @@ def getnotes(Y): #one hot encoding
         notes = Drums
         insttype = 'Drums'
         
-    print("notes: ", notes)
-    print("insttype: ", insttype)
-    print(Y.shape)
     Y = Y.transpose ( )
     prev = -1
     for y in Y :
