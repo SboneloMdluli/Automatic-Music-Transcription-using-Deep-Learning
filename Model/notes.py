@@ -140,6 +140,7 @@ Drums = {35 : 'B0',
          81 : 'A4'}
 
 # search for any image
+notelist  = []
 
 def getnotes(Y): #one hot encoding
     img = None
@@ -150,14 +151,18 @@ def getnotes(Y): #one hot encoding
     image = load_image(img)
     notes = {}
     inst = pred(image) # classification model
-    
-    if inst == 'Piano' :
+    insttype = None
+    if inst > 0.5 :
         notes = piano
+        insttype = 'Piano'
     else :
         notes = Drums
+        insttype = 'Drums'
         
+    print("notes: ", notes)
+    print("insttype: ", insttype)
+    print(Y.shape)
     Y = Y.transpose ( )
-    crrNotes = ' '
     prev = -1
     for y in Y :
 
@@ -166,6 +171,6 @@ def getnotes(Y): #one hot encoding
 
         for m in cur :
             if prev !=  m :
-                currNotes = currNotes + notes.get ( m+9 ) + '|'
+                notelist.append(notes.get ( m+9 ))
             prev =  m
-    return currNotes,inst
+    return notelist,insttype

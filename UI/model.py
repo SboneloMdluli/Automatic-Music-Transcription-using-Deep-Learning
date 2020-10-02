@@ -1,6 +1,6 @@
 import sys
 import os
-import execnet
+#import execnet
 import pickle
 import io
 import numpy as np
@@ -69,7 +69,7 @@ class Model :
     def transcribe(self):
         windows = AMT_Framing(self.getFileName())
         #hotvectors = onehotnotes(windows) transciption model
-        hotvectors = np.loadtxt("MIDI-Unprocessed_SMF_02_R1_2004_01-05_ORIG_MID--AUDIO_02_R1_2004_05_Track05_wav.midi.csv", delimiter=",")
+        hotvectors = np.loadtxt("1_funk_80_beat_4-4.mid.csv", delimiter=",")
         AMT(self.getFileName()) # produce spectogram
         notes = getnotes(hotvectors)
         return notes
