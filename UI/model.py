@@ -14,7 +14,7 @@ from model_input import AMT_Framing
 xpath = os.getcwd() + '/Model'
 sys.path.insert(0, xpath)
 from notes import getnotes
-#from transmodel import onehotnotes
+from transmodel import onehotnotes
 
 
 class Model :
@@ -67,9 +67,13 @@ class Model :
         return a
 
     def transcribe(self):
-        windows = AMT_Framing(self.getFileName())
-        #hotvectors = onehotnotes(windows) transciption model
-        hotvectors = np.loadtxt("1_funk_80_beat_4-4.mid.csv", delimiter=",")
         AMT(self.getFileName()) # produce spectogram
+        windows_ = AMT_Framing(self.getFileName())
+        #print("Windows shape: ", windows_.shape)
+        windows_ = windows_.reshape(windows_.shape[0:3])
+        #print("Windows shape: ", windows_.shape)
+        hotvectors = onehotnotes(windows_) #transciption model
+        print(hotvectors)
+        #hotvectors = np.loadtxt("1_funk_80_beat_4-4.mid.csv", delimiter=",")
         notes = getnotes(hotvectors)
         return notes

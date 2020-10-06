@@ -58,13 +58,15 @@ def AMT_Framing(filename_):
         pad_amount = int(WINDOW_SIZE / 2)
         paddedX[:, pad_amount:-pad_amount] = VQT_result
         frame_windows = np.array([paddedX[:, j:j+WINDOW_SIZE] for j in range(VQT_result.shape[1])])
-        frame_windows = np.expand_dims(frame_windows, axis=3)
+        #frame_windows = np.expand_dims(frame_windows, axis=3)
         numSlices = min(frame_windows.shape[0],Y_numSlices)
         numSlices_list.append(numSlices)
         frame_windows_list.append(frame_windows[:numSlices]) 
     
     audio_frames= np.concatenate(frame_windows_list, axis=0)
+    #audio_frames = frame_windows_list
     #storingData(audio_frames)
+    #print("Windows shape: ",audio_frames.shape)
     return audio_frames 
 
 '''
