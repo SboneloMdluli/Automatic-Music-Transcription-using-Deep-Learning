@@ -60,8 +60,6 @@ model.summary()
 
 test_input = X[402]
 
-print(test_input.shape)
-
 test_input = test_input.reshape((1,128, 7))
 #print(test_input)
 

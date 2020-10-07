@@ -47,32 +47,14 @@ class Model :
 
         return self.fileContents
 
-    def call_python_version(self,Version, Module, Function, ArgumentList) :
-        gw = execnet.makegateway ( "popen//python=python%s" % Version )
-        channel = gw.remote_exec ( """
-            from %s import %s as the_function
-            channel.send(the_function(*channel.receive()))
-        """ % (Module, Function) )
-        channel.send ( ArgumentList )
-        return channel.receive ( )
-
-
-    def gtruthvector(self):
-        result = self.call_python_version ( "2.7", "onehotenc", "getHotVector",
-                                   [self.getFileName(), 31.25, 20] )
-        memfile = io.BytesIO ( )
-        memfile.write ( json.loads ( result ).encode ( 'latin-1' ) )
-        memfile.seek ( 0 )
-        a = np.load ( memfile )
-        return a
 
     def transcribe(self):
         AMT(self.getFileName()) # produce spectogram
         windows_ = AMT_Framing(self.getFileName())
-        #print("Windows shape: ", windows_.shape)
+       
         windows_ = windows_.reshape(windows_.shape[0:3])
-        #print("Windows shape: ", windows_.shape)
-        hotvectors = onehotnotes(windows_) #transciption model
+        
+        hotvectors = round(onehotnotes(windows_)) #transciption model
         print(hotvectors)
         #hotvectors = np.loadtxt("1_funk_80_beat_4-4.mid.csv", delimiter=",")
         notes = getnotes(hotvectors)
