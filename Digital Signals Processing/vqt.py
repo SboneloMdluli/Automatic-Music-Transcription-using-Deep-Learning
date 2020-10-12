@@ -12,7 +12,7 @@ import matplotlib.pyplot as plt
 from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
 
 # Define Variable Q-Transform Parameters for Audio Signals Processing
-fs = 16000  # Sampling frequency
+fs = 44100  # Sampling frequency
 hop_length = 512  # number of samples between successive VQT columns
 fmin = None  # Minimum frequency. Defaults to C1 ~= 32.70 Hz
 n_bins = 84  # Number of frequency bins
@@ -43,26 +43,27 @@ def AMT(filename_):
     # Path Configuration
     #path = os.getcwd() + '/' + filename_
     filename = "{}".format(filename_)
+    #filename = "drum_2.wav"
     x, fs = librosa.load(filename, sr=None, mono=True, duration=12)
     # VQT Computation
-    V = librosa.vqt(x, sr=fs, hop_length=hop_length, fmin=fmin, n_bins=n_bins, gamma=20, bins_per_octave=bins_per_octave, tuning=tuning,
+    V = librosa.vqt(x, sr=fs, hop_length=hop_length, fmin=fmin, n_bins=n_bins, gamma=30, bins_per_octave=bins_per_octave, tuning=tuning,
                         filter_scale=filter_scale, norm=norm, sparsity=0.01, window='hann', scale=scale, pad_mode=pad_mode, res_type=res_type, dtype=dtype)
-
     V_mel = np.abs(V)
+    librosa.display.specshow(V_mel, sr=fs, x_axis='time', y_axis='linear', cmap="gist_yarg")
+    
     # Save The spectrogram
     '''
     fig = plt.Figure()
     canvas = FigureCanvas(fig)
     ax = fig.add_subplot(111)
     #ax = set_title(filename_+' VQT')
-    p = librosa.display.specshow(librosa.amplitude_to_db(V_mel, ref=np.max), ax=ax, y_axis='log', x_axis='time')
+    #p = librosa.display.specshow(librosa.amplitude_to_db(V_mel, ref=np.max), ax=ax, y_axis='log', x_axis='time')
     out = "{}.png".format(filename_)
     fig.savefig(out)
     '''
     # Conversion into the Mel-Scale to display and save Mel-spectrogram  for prediction  
     melspec(V_mel,filename)
 
-    
 def melspec(V_mel,filename):
     # Mapping Magnitude spectrogram to the Mel Scale
     mels = librosa.feature.melspectrogram(
