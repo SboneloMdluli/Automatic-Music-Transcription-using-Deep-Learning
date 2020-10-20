@@ -49,16 +49,6 @@ def AMT(filename_):
                         filter_scale=filter_scale, norm=norm, sparsity=0.01, window='hann', scale=scale, pad_mode=pad_mode, res_type=res_type, dtype=dtype)
 
     V_mel = np.abs(V)
-    # Save The spectrogram
-    '''
-    fig = plt.Figure()
-    canvas = FigureCanvas(fig)
-    ax = fig.add_subplot(111)
-    #ax = set_title(filename_+' VQT')
-    p = librosa.display.specshow(librosa.amplitude_to_db(V_mel, ref=np.max), ax=ax, y_axis='log', x_axis='time')
-    out = "{}.png".format(filename_)
-    fig.savefig(out)
-    '''
     # Conversion into the Mel-Scale to display and save Mel-spectrogram  for prediction  
     melspec(V_mel,filename)
 
