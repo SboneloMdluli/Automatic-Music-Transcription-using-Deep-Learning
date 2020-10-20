@@ -35,3 +35,8 @@ The instrument classification model in made using Keras which can be installed u
 
 [The ground truth data is generated using MIDI format](https://web.archive.org/web/20141227205754/http://www.sonicspot.com:80/guide/midifiles.html). We use [open source MIDI parser to get note data](https://mido.readthedocs.io/en/latest/index.html). [The Midi score to note mapping for a piano is a one to one mapping E.g {72=G#6, 67=D#6, 64=C6}](https://www.inspiredacoustics.com/en/MIDI_note_numbers_and_center_frequencies)
 
+#### Application Executable
+```sh
+pyinstaller --onefile view.py
+```
+
