@@ -38,4 +38,4 @@ The instrument classification model in made using Keras which can be installed u
 ### Application Executable
 ```sh
  pyinstaller --onefile view.py
-```sh
+```
