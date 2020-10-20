@@ -164,7 +164,7 @@ def getnotes(Y): #one hot encoding
     for y in Y :
 
         x = np.array ( y )
-        cur = np.where ( x == 1 )[0]
+        cur = np.where( x == 1 )[0]
 
         for m in cur :
             if prev !=  m :

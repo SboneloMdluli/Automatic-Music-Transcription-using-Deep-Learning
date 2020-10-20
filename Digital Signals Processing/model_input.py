@@ -32,12 +32,11 @@ n_mels = 128
 DURATION = 12
 WINDOW_SIZE = 7
 
-#def AMT_Framing(filename_):
-def AMT_Framing():
+def AMT_Framing(filename_):
     # Audio Processing
     #filename = 'Guns N Roses-Sweet Child O Mine Intro.wav'
-    # filename = "{}".format(filename_)
-    filename = "piano_1.wav"
+    filename = "{}".format(filename_)
+    #filename = "piano_1.wav"
     x, fs = librosa.load(filename, sr=None, mono=True, duration=DURATION)
     V= librosa.vqt(x, sr=fs, hop_length=hop_length, fmin=fmin, n_bins=n_bins, gamma=0, bins_per_octave=bins_per_octave, tuning=tuning,
                         filter_scale=filter_scale, norm=norm, sparsity=0.01, window='hann', scale=scale, pad_mode=pad_mode, res_type=res_type, dtype=dtype)
@@ -65,9 +64,9 @@ def AMT_Framing():
         frame_windows_list.append(frame_windows[:numSlices]) 
     
     audio_frames= np.concatenate(frame_windows_list, axis=0)
-    print("So the shape is: ", audio_frames.shape)
+    #print("So the shape is: ", audio_frames.shape)
     #storingData(audio_frames)
-    #return audio_frames 
+    return audio_frames 
 
 '''
 #Function to store the frames in a hdf5 file    
@@ -78,5 +77,5 @@ def storingData(frames,filename):
         hdf.create_dataset('VQT_audio_frames',data=frames)
     
 #AMT_Framing(filename)
-'''
 AMT_Framing()
+'''

@@ -15,7 +15,8 @@ xpath = os.getcwd() + '/Model'
 sys.path.insert(0, xpath)
 from notes import getnotes
 from transmodel import onehotnotes
-
+from numpy import savetxt
+import os
 
 class Model :
     def __init__(self) :
@@ -49,13 +50,16 @@ class Model :
 
 
     def transcribe(self):
+        x = self.getFileName()+'.csv'
+        hotvectors = np.empty([88,625])
+        if os.path.exists(x):
+            hotvectors = np.loadtxt(x, delimiter=",")
+            
         AMT(self.getFileName()) # produce spectogram
         windows_ = AMT_Framing(self.getFileName())
-       
         windows_ = windows_.reshape(windows_.shape[0:3])
-        
-        hotvectors = round(onehotnotes(windows_)) #transciption model
-        print(hotvectors)
-        #hotvectors = np.loadtxt("1_funk_80_beat_4-4.mid.csv", delimiter=",")
+        hotvectors = np.round(onehotnotes(windows_)) #transciption model
+        hotvectors = hotvectors.reshape(hotvectors.shape[0:2])
+        savetxt(x, hotvectors, delimiter=',')
         notes = getnotes(hotvectors)
         return notes
