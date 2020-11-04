@@ -40,9 +40,14 @@ class MainWindowUIClass ( Ui_Dialog ) :
         self.horizontalSlider.setValue(pos)
 
     def stopAudio(self) :
-        self.player.pause ( )
-
-    # slot
+        self.player.pause ()
+        directory = os.getcwd()
+        files_in_directory = os.listdir(directory)
+        filtered_files = [file for file in files_in_directory if file.endswith(".png")]
+        for file in filtered_files:
+	        path_to_file = os.path.join(directory, file)
+	        os.remove(path_to_file)
+      
     def transribeSlot(self) :
         ''' Called when the user presses the Write-Doc button.
         '''
@@ -53,12 +58,12 @@ class MainWindowUIClass ( Ui_Dialog ) :
         self.instrument = notes[1]
         self.debugPrint("Instrument type :" + self.instrument)
         self.player.setMedia(self.content)
-        self.player.play()
+       
 
         for i in self.notes:
             self.debugPrint(i)
             #self.debugTextBrowser.clear()
-
+        self.player.play()
         #plt.matshow ( res )
         #plt.show ( )
 

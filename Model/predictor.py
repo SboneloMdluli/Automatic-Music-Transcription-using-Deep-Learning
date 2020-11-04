@@ -19,6 +19,6 @@ def load_image(filename):
 def pred(img):
 	path = os.getcwd() + '/Model/AMTclassification.h5' 
 	model = load_model(path)
-	# predict the class 
+	# predict the class
 	result = model.predict(img)
 	return (result[0])
